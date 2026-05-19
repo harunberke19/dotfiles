@@ -1,0 +1,53 @@
+# ~/.config/i3status/config_goth
+
+general {
+    colors = true
+    interval = 5
+    markup = "pango"
+    # Theme Colors
+    color_good = "#dcdcdc"      # Grey (Connected/Good)
+    color_degraded = "#5c0a0a"  # Dark Red (Weak signal/Muted)
+    color_bad = "#800000"       # Bright Red (Disconnected)
+}
+
+# --- MODULES ORDER ---
+# Only what matters
+order += "tztime local"
+order += "battery 0"
+order += "wireless _first_"
+order += "volume master"
+
+
+# --- CONFIGURATION ---
+
+battery 0 {
+        format = "<span weight='bold'> %status %percentage  |   %remaining  -  %emptytime </span>"
+        format_down = "<span weight='bold' foreground='#900000'> No battery </span>"
+        status_chr = "<span weight='bold' foreground='#28d83fff'> ⚡ CHR </span>"
+        status_bat = "<span weight='bold' foreground='#e9f727ff'> 🔋 BAT </span>"
+        status_unk = "<span weight='bold' foreground='#900000'> ? UNK </span>"
+        status_full = "<span weight='bold' foreground='#28d83fff'> ☻ FULL </span>"
+        status_idle = "<span weight='bold' foreground='#e9f727ff'> ☻ IDLE </span>"
+        path = "/sys/class/power_supply/BAT%d/uevent"
+        low_threshold = 20
+}
+
+wireless _first_ {
+    # If connected: "WIFI: HomeNetwork 90%"
+    # If disconnected: "WIFI: DOWN" (in bright red)
+    format_up = "| WIFI: %essid %quality |"
+    format_down = "| WIFI: DOWN |"
+}
+
+volume master {
+    format = " VOL: %volume |"
+    format_muted = " VOL: MUTED |"
+    device = "default"
+    mixer = "Master"
+    mixer_idx = 0
+}
+
+tztime local {
+    # Minimal date/time
+    format = "<span weight='bold' foreground='#900000'> %H:%M  |  %Y-%m-%d </span>"
+}
