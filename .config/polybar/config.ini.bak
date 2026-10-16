@@ -1,0 +1,108 @@
+[colors]
+# Your exact i3status colors
+foreground = #dcdcdc
+bad = #800000
+degraded = #5c0a0a
+time_red = #900000
+
+# Battery specific
+bat_chr = #28d83f
+bat_bat = #e9f727
+bat_unk = #900000
+
+[bar/main]
+# This line is critical for the launch.sh script to attach to the second screen
+monitor = ${env:MONITOR:}
+
+width = 100%
+height = 20pt
+background = #000000
+foreground = ${colors.foreground}
+
+# Fira Code is set here
+font-0 = "FiraCode Nerd Font:size=10:weight=bold;2"
+font-1 = "Symbols Nerd Font Mono:size=12;2"
+
+# Workspaces on the left, your old i3status modules on the right
+modules-left = i3
+modules-right = wlan pulseaudio battery date
+
+cursor-click = pointer
+
+# --- MODULES ---
+
+[module/i3]
+type = internal/i3
+pin-workspaces = true
+strip-wsnumbers = true
+index-sort = true
+enable-click = true
+enable-scroll = false
+
+# Minimalist workspace blocks
+label-focused = %name%
+label-focused-background = #333333
+label-focused-padding = 2
+
+label-unfocused = %name%
+label-unfocused-foreground = #888888
+label-unfocused-padding = 2
+
+label-urgent = %name%
+label-urgent-background = ${colors.bad}
+label-urgent-padding = 2
+
+[module/wlan]
+type = internal/network
+# Note: Polybar detects the interface automatically in recent versions, 
+# but change 'wlan0' to your interface (e.g., wlp3s0) if it doesn't show up.
+interface-type = wireless
+interval = 5
+
+# Replicating "| WIFI: HomeNetwork 90% |"
+format-connected =    "WIFI: <label-connected>   "
+label-connected = %essid% %signal%%   
+
+format-disconnected = "WIFI: DOWN   "
+format-disconnected-foreground = ${colors.bad}
+
+[module/pulseaudio]
+type = internal/pulseaudio
+
+# Replicating " VOL: 50% |"
+format-volume ="   VOL: <label-volume>   "
+label-volume = %percentage%%
+
+format-muted = "   VOL: MUTED   "
+format-muted-foreground = ${colors.degraded}
+
+[module/battery]
+type = internal/battery
+full-at = 99
+low-at = 20
+battery = BAT0
+adapter = ADP1
+poll-interval = 5
+time-format = %H:%M
+
+# Inline colors using %{F#hex} to match your old Pango markup exactly
+format-charging = <label-charging>
+label-charging = "%{F#28d83f}⚡ CHR%{F-} - %percentage%%  -  %time%   "
+
+format-discharging = <label-discharging>
+label-discharging = "%{F#e9f727}🔋 BAT%{F-} - %percentage%% - %time%   "
+
+format-full = <label-full>
+label-full = "  %{F#28d83f}☻ FULL%{F-} %percentage%%  "
+
+format-low = <label-low>
+label-low = "  %{F#900000}No battery%{F-} %percentage%%  "
+
+[module/date]
+type = internal/date
+interval = 5
+
+# Replicating the bright red minimal date/time
+date =   %H:%M  -  %Y-%m-%d  
+label = %date%
+label-foreground = ${colors.time_red}
